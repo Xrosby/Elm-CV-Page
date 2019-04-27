@@ -1,32 +1,164 @@
-module Main exposing (..)
-import Html exposing (text)
+module Main exposing (Ship)
+
+import Html exposing (..)
+import Html.Attributes exposing (..)
+import List exposing (..)
 
 
-dog =
-    { name = "Spock"
-    , age = 3
 
-    }
 
-main =
-    text <| String.fromInt <| .age dog
-
+main = 
 
 {-
+   -- EXERCISE IN CREATING HTML ELEMENTS
+   type alias Ship =
+       { name : String
+       , model : String
+       , cost : Int
+       }
 
-politely : String -> String
-politely phrase =
-    "Excuse me, " ++ phrase
+
+   shipsArray =
+       [ { name = "X-wing", cost = 14999 }
+       , { name = "Millinium Falcon", cost = 10000 }
+       , { name = "Death Star", cost = 10000000 }
+       ]
 
 
-ask : String -> String -> String
-ask thing place =
-    "is there a " ++ thing ++ " in the " ++ place ++ "?"
+   renderShip ship =
+       li []
+           [ text ship.name
+           , text ", "
+           , b []
+               [ text <| String.fromInt ship.cost ]
+           ]
 
-askPolitelyAboutFish : String -> String
-askPolitelyAboutFish = politely << (ask "fish")
 
-main =
-    text <|askPolitelyAboutFish "pond"
+   renderShips ships =
+       div
+           [ style "font-family" "-apple-system"
+           , style "padding" "1em"
+           ]
+           [ h1 [] [ text "Ships" ]
+           , ul [] (List.map renderShip ships)
+           ]
 
-    -}
+
+   main =
+       renderShips shipsArray
+
+-}
+{-
+      -- Exercise in list creating and handling
+      -- No mixed types in a list
+
+
+      type alias Person =
+          { name : String
+          , age : Int
+          }
+
+
+      people =
+          [ { name = "Martin Dreymann", age = 29 }
+          , { name = "Lasse Klevang", age = 18 }
+          ]
+
+
+      names : List Person -> List String
+      names peeps =
+          List.map (\peep -> peep.name) peeps
+
+
+
+   -- STUDY THIS FUNCTION FURTHER. TF IS "JUST" "_" "memo" ?
+      findPerson :
+          String
+          -> List Person
+          ->
+              Maybe
+                  -- Maybe equals to Null or a Person
+                  Person
+      findPerson name peeps =
+          List.foldr
+              (\peep memo ->
+                  case memo of
+                      Just _ ->
+                          memo
+
+                      Nothing ->
+                          if peep.name == name then
+                              Just peep
+
+                          else
+                              Nothing
+              )
+              Nothing
+              peeps
+
+
+      main =
+          text <| Debug.toString <| findPerson "Martin Dreymann" people
+
+-}
+{-
+
+   -- Exercise in Alias(Type definition) And record(object) creation and handling
+
+   -- This is an alias > Defines a type which can be used to
+   -- infer variables and types on a parameter of the type
+   type alias Dog =
+       { name : String
+       , age : Int
+
+       }
+   -- Creating a record, which matches the alias definition
+   spock =
+       { name = "Spock"
+       , age = 3
+
+       }
+
+   -- Basically ^^^ Uphere we define the type and an object of the type
+   -- Down here we define the function signature, and then the actual function
+
+
+   -- A renderDog function signature that takes an alias Dog, returns a String
+   renderDog : Dog -> String
+   -- renderDog function
+   renderDog dog =
+       dog.name ++ ", " ++ (String.fromInt dog.age)
+
+
+   -- And here it is all render to html text,
+    -- by calling the renderdog function with the dog variable
+   main =
+       text <| renderDog spock
+
+-}
+-- Exercise in function definitions and function concatination
+{-
+
+   politely : String -> String
+   politely phrase =
+       "Excuse me, " ++ phrase
+
+
+   ask : String -> String -> String
+   ask thing place =
+       "is there a " ++ thing ++ " in the " ++ place ++ "?"
+
+
+   -- Function takes a String and returns a function
+   askPolitelyAboutFish : String -> String
+
+   -- In the function body we first evaluate the parameter,
+   -- with the ask punction. So "fish" and "pond" would be the two parameters.
+   -- The returned String from ask with the two parameters will then be passed to politely
+   -- evaluated, and then finally the function will return the result.
+   askPolitelyAboutFish = politely << (ask "fish")
+
+   main =
+       text <|askPolitelyAboutFish "pond"
+
+-}
