@@ -1,16 +1,64 @@
-module Main exposing (Ship)
+module Main exposing (Model, Msg(..), init, main, update, view)
 
-import Html exposing (..)
-import Html.Attributes exposing (..)
-import List exposing (..)
-
-
+import Browser
+import Html exposing (Html, button, div, text)
+import Html.Events exposing (onClick)
 
 
-main = 
+
+-- MODEL
+
+
+type alias Model =
+    Int
+
+
+init : Model
+init =
+    0
+
+
+
+-- UPDATE
+
+
+type Msg
+    = Increment
+    | Decrement
+
+
+update : Msg -> Model -> Model
+update msg model =
+    case msg of
+        Increment ->
+            model + 1
+
+        Decrement ->
+            model - 1
+
+
+
+-- VIEW
+
+
+view : Model -> Html Msg
+view model =
+    div []
+        [ button [ onClick Decrement ] [ text "-" ]
+        , div [] [ text (String.fromInt model) ]
+        , button [ onClick Increment ] [ text "+" ]
+        ]
+
+
+main =
+    Browser.sandbox { init = init, update = update, view = view }
+
+
 
 {-
    -- EXERCISE IN CREATING HTML ELEMENTS
+
+
    type alias Ship =
        { name : String
        , model : String
@@ -26,7 +74,9 @@ main =
 
 
    renderShip ship =
-       li []
+       li
+           [ class "ship"
+           ]
            [ text ship.name
            , text ", "
            , b []
@@ -38,6 +88,7 @@ main =
        div
            [ style "font-family" "-apple-system"
            , style "padding" "1em"
+           , class "ship-list"
            ]
            [ h1 [] [ text "Ships" ]
            , ul [] (List.map renderShip ships)
